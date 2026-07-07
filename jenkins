@@ -9,7 +9,7 @@ pipeline{
         stage('gitpull')
         {
             steps{
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Dasun31/512.git']])
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/kasunkosala/devops-cicd.git/']])
             }
         }
         stage('build docker image'){
