@@ -1,0 +1,25 @@
+pipeline {
+  agent any
+
+  stages {
+
+      stage('Pull') {
+        steps {
+          }
+        }
+     
+      stage('Build') {
+      steps {
+        bat 'docker build -t my-flask-app .'
+        bat 'docker tag my-flask-app $DOCKER_BFLASK_IMAGE'
+      }
+    }
+        stage('Deploy') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: "${DOCKER_REGISTRY_CREDS}", 
+        passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+          bat "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin docker.io"
+          bat 'docker push $DOCKER_BFLASK_IMAGE'
+        }
+      }
+    }
