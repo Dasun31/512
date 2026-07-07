@@ -1,25 +1,34 @@
-pipeline {
-  agent any
-
-  stages {
-
-      stage('Pull') {
-        steps {
-          }
-        }
-     
-      stage('Build') {
-      steps {
-        bat 'docker build -t my-flask-app .'
-        bat 'docker tag my-flask-app $DOCKER_BFLASK_IMAGE'
-      }
+pipeline{
+    agent any
+    environment{
+        dockerImage =''
+        registry = 'SOC2026'
+        registryCridential = '994fb183-54d2-4a75-817a-7bd2c977bd26'
     }
-        stage('Deploy') {
-      steps {
-        withCredentials([usernamePassword(credentialsId: "${DOCKER_REGISTRY_CREDS}", 
-        passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-          bat "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin docker.io"
-          bat 'docker push $DOCKER_BFLASK_IMAGE'
+    stages{
+        stage('gitpull')
+        {
+            steps{
+                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/kasunkosala/devops-cicd.git/']])
+            }
         }
-      }
+        stage('build docker image'){
+            steps{
+                script{
+                    dockerImage = docker.build registry
+                }
+            }
+        }
+        stage('upload docker image'){
+            steps{
+                script{
+                    docker.withRegistry('',registryCridential){
+                        dockerImage.push()
+                    }
+                }
+                
+            }
+        }
+        
     }
+}
