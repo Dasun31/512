@@ -3,7 +3,7 @@ pipeline{
     environment{
         dockerImage =''
         registry = 'dasunshanaka7/img2'
-        registryCridential = '994fb183-54d2-4a75-817a-7bd2c977bd26'
+        registryCridential = '4d8fdb13-7c68-4ef7-837d-bae157d4fec8'
     }
     stages{
         stage('gitpull')
