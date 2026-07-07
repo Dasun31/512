@@ -1,15 +1,15 @@
 pipeline{
     agent any
     environment{
-        dockerImage ='img2'
-        registry = 'SOC2026'
+        dockerImage =''
+        registry = 'dasunshanaka7/img2'
         registryCridential = '994fb183-54d2-4a75-817a-7bd2c977bd26'
     }
     stages{
         stage('gitpull')
         {
             steps{
-                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/kasunkosala/devops-cicd.git/']])
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Dasun31/512.git']])
             }
         }
         stage('build docker image'){
