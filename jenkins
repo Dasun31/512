@@ -1,7 +1,7 @@
 pipeline{
     agent any
     environment{
-        dockerImage =''
+        dockerImage ='img2'
         registry = 'SOC2026'
         registryCridential = '994fb183-54d2-4a75-817a-7bd2c977bd26'
     }
