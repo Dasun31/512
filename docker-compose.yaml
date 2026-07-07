@@ -1,0 +1,27 @@
+version: "3"
+services:
+  wordpress:
+    image: wordpress
+    ports:
+      - “8082:80”
+    depends_on:
+      - mysql
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: “abc”
+      WORDPRESS_DB_NAME: wordpress
+  mysql:
+    image: “mysql:5.7”
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_ROOT_PASSWORD: “abc”
+    volumes:
+      -  ./mysql:/var/lib/mysql
+  website:
+    image: nginx
+    ports:
+     - "8081:80"
+    restart: always
+  database:
+   image: redis
